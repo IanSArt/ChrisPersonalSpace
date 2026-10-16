@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christian Aditya W. - Personal Hub & Mini-Games</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tone.js for Guitar Synthesizer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"Fira Code"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Variables for Dynamic Color Themes per Tab */
+        :root {
+            /* Default: Home Theme (Cozy Cream & Amber) */
+            --primary: #c25e2e;
+            --primary-hover: #a34b22;
+            --secondary: #e27d60;
+            --bg-body: #fbf8f3;
+            --bg-card: rgba(255, 252, 247, 0.88);
+            --accent: #f8ede3;
+            --border-color: rgba(210, 185, 160, 0.45);
+            --text-main: #332720;
+            --text-muted: #786659;
+            --header-bg: rgba(251, 248, 243, 0.92);
+            --glow: rgba(194, 94, 46, 0.18);
+        }
+
+        /* Merakit PC Theme (Tech Bronze & Slate) */
+        .theme-merakit-pc {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #0d9488;
+            --bg-body: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.85);
+            --accent: rgba(45, 212, 191, 0.15);
+            --border-color: rgba(51, 65, 85, 0.8);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --header-bg: rgba(15, 23, 42, 0.92);
+            --glow: rgba(45, 212, 191, 0.25);
+        }
+
+        /* Valorant Theme (Crimson Cyberpunk) */
+        .theme-valorant {
+            --primary: #ff4655;
+            --primary-hover: #d93845;
+            --secondary: #0f1923;
+            --bg-body: #0f1923;
+            --bg-card: rgba(21, 32, 43, 0.88);
+            --accent: rgba(255, 70, 85, 0.15);
+            --border-color: rgba(255, 70, 85, 0.35);
+            --text-main: #ece8e1;
+            --text-muted: #a0aab3;
+            --header-bg: rgba(15, 25, 35, 0.92);
+            --glow: rgba(255, 70, 85, 0.35);
+        }
+
+        /* Infrastruktur LAN Theme (Network Blue & Cyan) */
+        .theme-infrastruktur {
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --secondary: #06b6d4;
+            --bg-body: #0a192f;
+            --bg-card: rgba(16, 36, 64, 0.88);
+            --accent: rgba(56, 189, 248, 0.15);
+            --border-color: rgba(56, 189, 248, 0.3);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --header-bg: rgba(10, 25, 47, 0.92);
+            --glow: rgba(56, 189, 248, 0.3);
+        }
+
+        /* Bermusik Theme (Acoustic Warm Wood) */
+        .theme-bermusik {
+            --primary: #8c4a27;
+            --primary-hover: #70371a;
+            --secondary: #d69e2e;
+            --bg-body: #faf6f0;
+            --bg-card: rgba(255, 253, 249, 0.92);
+            --accent: #fefcbf;
+            --border-color: rgba(214, 158, 46, 0.4);
+            --text-main: #2d1e16;
+            --text-muted: #6e5443;
+            --header-bg: rgba(250, 246, 240, 0.92);
+            --glow: rgba(140, 74, 39, 0.25);
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .dynamic-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dynamic-card:hover {
+            box-shadow: 0 16px 36px -8px var(--glow);
+        }
+
+        .btn-theme-primary {
+            background-color: var(--primary);
+            color: #ffffff;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px -2px var(--glow);
+        }
+        .btn-theme-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -2px var(--glow);
+        }
+
+        .text-theme-primary {
+            color: var(--primary);
+        }
+
+        /* Custom Fan Spin Keyframe */
+        @keyframes pcFanSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fan-spinning {
+            animation: pcFanSpin 0.35s linear infinite;
+        }
+
+        /* Custom Pulse Glow Animation */
+        @keyframes subtleGlow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+
+        .animated-glow {
+            animation: subtleGlow 3s infinite ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Drag and Drop visual feedback styles */
+        .draggable-part {
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+        }
+        .draggable-part:active {
+            cursor: grabbing;
+        }
+        .draggable-part.dragging {
+            opacity: 0.35;
+            transform: scale(0.95);
+        }
+        .drop-slot.drag-over {
+            border-color: #38bdf8 !important;
+            background-color: rgba(56, 189, 248, 0.25) !important;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
+            transform: scale(1.04);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-amber-200/50 pb-20">
+
+    <header class="sticky top-0 z-40 w-full px-4 sm:px-8 py-3.5 backdrop-blur-md transition-all duration-300 border-b" style="background-color: var(--header-bg); border-color: var(--border-color);">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            
+            <!-- Logo & Title -->
+            <button onclick="switchTab('beranda')" class="flex items-center gap-3 text-left focus:outline-none group">
+                <div class="w-10 h-10 rounded-2xl flex items-center justify-center font-serif font-bold text-lg text-white shadow-md transition-transform group-hover:scale-105" style="background-color: var(--primary);">
+                    CA
+                </div>
+                <div>
+                    <h1 class="font-serif font-bold text-lg leading-tight transition-colors" style="color: var(--text-main);">
+                        Christian Aditya W.
+                    </h1>
+                    <span class="text-[10px] font-semibold uppercase tracking-widest block opacity-70" style="color: var(--text-muted);">
+                        Personal Hub
+                    </span>
+                </div>
+            </button>
+
+            <!-- Navigation Bar & 3-Dot Menu Hub -->
+            <div class="flex items-center gap-2">
+                <!-- Desktop Tab Navigation -->
+                <nav class="hidden md:flex items-center gap-1.5 p-1 rounded-full border shadow-sm" style="background: var(--bg-card); border-color: var(--border-color);">
+                    <button onclick="switchTab('beranda')" data-tab-btn="beranda" class="tab-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 text-white" style="background-color: var(--primary);">
+                        <i class="fa-solid fa-house"></i> Beranda
+                    </button>
+                    <button onclick="switchTab('merakit-pc')" data-tab-btn="merakit-pc" class="tab-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 opacity-80 hover:opacity-100" style="color: var(--text-main);">
+                        <i class="fa-solid fa-microchip"></i> Merakit PC
+                    </button>
+                    <button onclick="switchTab('valorant')" data-tab-btn="valorant" class="tab-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 opacity-80 hover:opacity-100" style="color: var(--text-main);">
+                        <i class="fa-solid fa-gamepad"></i> Valorant
+                    </button>
+                    <button onclick="switchTab('infrastruktur')" data-tab-btn="infrastruktur" class="tab-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 opacity-80 hover:opacity-100" style="color: var(--text-main);">
+                        <i class="fa-solid fa-network-wired"></i> Jaringan LAN
+                    </button>
+                    <button onclick="switchTab('bermusik')" data-tab-btn="bermusik" class="tab-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-2 opacity-80 hover:opacity-100" style="color: var(--text-main);">
+                        <i class="fa-solid fa-music"></i> Bermusik
+                    </button>
+                </nav>
+
+                <!-- 3-Dot Hub Dropdown Button -->
+                <div class="relative">
+                    <button id="dotsBtn" onclick="toggleDotsMenu(event)" class="w-10 h-10 rounded-full border flex items-center justify-center transition-all shadow-sm focus:outline-none hover:rotate-90" style="background-color: var(--bg-card); border-color: var(--border-color); color: var(--text-main);">
+                        <i class="fa-solid fa-ellipsis-vertical text-lg"></i>
+                    </button>
+
+                    <!-- Dropdown Popup -->
+                    <div id="dotsMenu" class="hidden absolute right-0 mt-2 w-64 rounded-2xl shadow-2xl border p-2 z-50 transition-all" style="background-color: var(--bg-card); border-color: var(--border-color);">
+                        <div class="px-3 py-2 border-b mb-1" style="border-color: var(--border-color);">
+                            <p class="text-[10px] font-bold uppercase tracking-wider opacity-60" style="color: var(--text-muted);">Pilih Sudut Hub</p>
+                        </div>
+                        <div class="space-y-1">
+                            <button onclick="switchTab('beranda'); toggleDotsMenu();" class="w-full text-left px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-black/5 transition-colors">
+                                <span class="flex items-center gap-2.5"><i class="fa-solid fa-house text-amber-600"></i> Beranda</span>
+                                <span class="text-[10px] opacity-60">Utama</span>
+                            </button>
+                            <button onclick="switchTab('merakit-pc'); toggleDotsMenu();" class="w-full text-left px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-black/5 transition-colors">
+                                <span class="flex items-center gap-2.5"><i class="fa-solid fa-desktop text-teal-600"></i> Game Perakitan PC</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-teal-100 text-teal-800">Mini Game</span>
+                            </button>
+                            <button onclick="switchTab('valorant'); toggleDotsMenu();" class="w-full text-left px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-black/5 transition-colors">
+                                <span class="flex items-center gap-2.5"><i class="fa-solid fa-gamepad text-red-500"></i> Valorant Hub & Aim</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-red-100 text-red-800">Stats & Aim</span>
+                            </button>
+                            <button onclick="switchTab('infrastruktur'); toggleDotsMenu();" class="w-full text-left px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-black/5 transition-colors">
+                                <span class="flex items-center gap-2.5"><i class="fa-solid fa-network-wired text-blue-600"></i> Game Cable Crimping</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-blue-100 text-blue-800">Simulator</span>
+                            </button>
+                            <button onclick="switchTab('bermusik'); toggleDotsMenu();" class="w-full text-left px-3 py-2 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-black/5 transition-colors">
+                                <span class="flex items-center gap-2.5"><i class="fa-solid fa-guitar text-yellow-700"></i> Bermusik Gitar</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-yellow-100 text-yellow-800">Synth</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 pt-8 w-full flex-grow">
+
+        <!-- ================= TAB 1: BERANDA ================= -->
+        <section id="tab-beranda" class="tab-content space-y-10">
+            <!-- Profil Headings -->
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-bold tracking-widest uppercase shadow-sm animated-glow" style="background-color: var(--accent); border-color: var(--border-color); color: var(--primary);">
+                    <i class="fa-solid fa-sparkles text-amber-500"></i> PERSONAL HUB & EXPERIENCES
+                </div>
+
+                <h2 class="font-serif font-extrabold text-4xl sm:text-6xl tracking-tight leading-none" style="color: var(--text-main);">
+                    Christian Aditya
+                    <span class="block font-serif italic font-normal text-3xl sm:text-5xl mt-1 text-theme-primary">Wardana</span>
+                </h2>
+
+                <!-- Bio Card -->
+                <div class="dynamic-card p-6 sm:p-8 rounded-3xl text-left shadow-lg mt-6 relative overflow-hidden">
+                    <div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full blur-2xl opacity-30" style="background-color: var(--primary);"></div>
+                    <p class="text-sm sm:text-base leading-relaxed relative z-10" style="color: var(--text-main);">
+                        Halo! Saya berdomisili di <span class="font-bold border-b-2" style="border-color: var(--primary);">Kampung Babakan</span>. Saya memiliki passion mendalam di bidang 
+                        <mark class="px-2.5 py-1 rounded-lg font-semibold shadow-sm" style="background-color: var(--accent); color: var(--primary);">Perkomputeran, Perakitan PC, & Infrastruktur Jaringan LAN</mark>, serta hobi kompetitif bermain <span class="font-bold">Valorant</span> dan mengekspresikan diri lewat <span class="font-bold">Bermusik Gitar</span>.
+                    </p>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <div class="dynamic-card p-5 rounded-2xl flex items-center gap-4 text-left shadow-sm hover:scale-[1.01] transition-transform">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl shadow-inner" style="background-color: var(--accent); color: var(--primary);">
+                            <i class="fa-solid fa-cake-candles"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-extrabold uppercase tracking-widest opacity-60" style="color: var(--text-muted);">Tanggal Lahir</span>
+                            <h4 class="font-serif font-bold text-lg leading-tight" style="color: var(--text-main);">24 November 2007</h4>
+                            <span class="text-xs opacity-70">24/11/2007</span>
+                        </div>
+                    </div>
+
+                    <div class="dynamic-card p-5 rounded-2xl flex items-center gap-4 text-left shadow-sm hover:scale-[1.01] transition-transform">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl shadow-inner" style="background-color: var(--accent); color: var(--primary);">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-extrabold uppercase tracking-widest opacity-60" style="color: var(--text-muted);">Tempat Tinggal</span>
+                            <h4 class="font-serif font-bold text-lg leading-tight" style="color: var(--text-main);">Kampung Babakan</h4>
+                            <span class="text-xs opacity-70">Banten, Indonesia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header Section 4 Sudut -->
+            <div class="text-center pt-8 border-t" style="border-color: var(--border-color);">
+                <span class="text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border shadow-sm" style="background-color: var(--accent); border-color: var(--border-color); color: var(--primary);">
+                    <i class="fa-solid fa-gamepad mr-1"></i> Interactive Showcase
+                </span>
+                <h3 class="font-serif font-bold text-3xl sm:text-4xl mt-3" style="color: var(--text-main);">
+                    4 Sudut Interaktif
+                </h3>
+                <p class="text-xs sm:text-sm mt-1 max-w-md mx-auto opacity-75">
+                    Arahkan kursor atau sentuh kartu di bawah untuk melihat animasi warna tematik setiap sudut!
+                </p>
+            </div>
+
+            <!-- 4 Interactive Cards Grid with Dynamic Background Hover Shift -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                
+                <!-- Card 1: Merakit PC -->
+                <div onclick="switchTab('merakit-pc')" class="dynamic-card p-6 rounded-3xl cursor-pointer flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300 hover:bg-gradient-to-br hover:from-teal-600 hover:to-slate-900 hover:text-white hover:border-teal-400 hover:shadow-xl hover:shadow-teal-900/30">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-5 transition-all bg-teal-500/10 text-teal-600 border border-teal-500/20 group-hover:bg-white/20 group-hover:text-teal-200 group-hover:border-white/30 shadow-sm">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-teal-600 group-hover:text-teal-200 block mb-1">Perkomputeran</span>
+                        <h4 class="font-serif font-bold text-xl mb-2 group-hover:text-white transition-colors">Merakit PC</h4>
+                        <p class="text-xs leading-relaxed opacity-75 group-hover:opacity-90">
+                            Interactive 2D Workshop perakitan PC, pasang CPU, Thermal Paste, hingga POST Boot test.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-6 border-t flex items-center justify-between text-xs font-bold border-slate-200/50 group-hover:border-white/20">
+                        <span>Mainkan Simulator</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform text-teal-600 group-hover:text-teal-200"></i>
+                    </div>
+                </div>
+
+                <!-- Card 2: Valorant Hub -->
+                <div onclick="switchTab('valorant')" class="dynamic-card p-6 rounded-3xl cursor-pointer flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300 hover:bg-gradient-to-br hover:from-red-600 hover:to-slate-950 hover:text-white hover:border-red-400 hover:shadow-xl hover:shadow-red-950/40">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-5 transition-all bg-red-500/10 text-red-500 border border-red-500/20 group-hover:bg-white/20 group-hover:text-red-200 group-hover:border-white/30 shadow-sm">
+                            <i class="fa-solid fa-gamepad"></i>
+                        </div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-red-500 group-hover:text-red-200 block mb-1">Gaming</span>
+                        <h4 class="font-serif font-bold text-xl mb-2 group-hover:text-white transition-colors">Valorant Hub</h4>
+                        <p class="text-xs leading-relaxed opacity-75 group-hover:opacity-90">
+                            Rank Silver 2, 20 Kills/game, Vandal Prime 1.0, & Mini Game Aim Trainer.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-6 border-t flex items-center justify-between text-xs font-bold border-slate-200/50 group-hover:border-white/20">
+                        <span>Lihat Stats & Aim</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform text-red-500 group-hover:text-red-200"></i>
+                    </div>
+                </div>
+
+                <!-- Card 3: Jaringan LAN -->
+                <div onclick="switchTab('infrastruktur')" class="dynamic-card p-6 rounded-3xl cursor-pointer flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300 hover:bg-gradient-to-br hover:from-sky-600 hover:to-slate-900 hover:text-white hover:border-sky-400 hover:shadow-xl hover:shadow-sky-900/30">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-5 transition-all bg-sky-500/10 text-sky-600 border border-sky-500/20 group-hover:bg-white/20 group-hover:text-sky-200 group-hover:border-white/30 shadow-sm">
+                            <i class="fa-solid fa-network-wired"></i>
+                        </div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-sky-600 group-hover:text-sky-200 block mb-1">Jaringan LAN</span>
+                        <h4 class="font-serif font-bold text-xl mb-2 group-hover:text-white transition-colors">Crimping Game</h4>
+                        <p class="text-xs leading-relaxed opacity-75 group-hover:opacity-90">
+                            Game menyusun 8 warna kabel UTP standar T-568B, Crimping, & uji LED LAN Tester.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-6 border-t flex items-center justify-between text-xs font-bold border-slate-200/50 group-hover:border-white/20">
+                        <span>Game Crimping</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform text-sky-600 group-hover:text-sky-200"></i>
+                    </div>
+                </div>
+
+                <!-- Card 4: Bermusik Gitar -->
+                <div onclick="switchTab('bermusik')" class="dynamic-card p-6 rounded-3xl cursor-pointer flex flex-col justify-between group hover:-translate-y-1.5 transition-all duration-300 hover:bg-gradient-to-br hover:from-amber-700 hover:to-amber-950 hover:text-white hover:border-amber-400 hover:shadow-xl hover:shadow-amber-900/40">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-5 transition-all bg-amber-600/10 text-amber-700 border border-amber-600/20 group-hover:bg-white/20 group-hover:text-amber-200 group-hover:border-white/30 shadow-sm">
+                            <i class="fa-solid fa-guitar"></i>
+                        </div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 group-hover:text-amber-200 block mb-1">Hobi & Seni</span>
+                        <h4 class="font-serif font-bold text-xl mb-2 group-hover:text-white transition-colors">Bermusik Gitar</h4>
+                        <p class="text-xs leading-relaxed opacity-75 group-hover:opacity-90">
+                            Gitar akustik, synth audio player lagu Sempurna, & virtual guitar fretboard.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-6 border-t flex items-center justify-between text-xs font-bold border-slate-200/50 group-hover:border-white/20">
+                        <span>Play Audio Synth</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform text-amber-700 group-hover:text-amber-200"></i>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: MERAKIT PC (MINI GAME WORKSHOP) ================= -->
+        <section id="tab-merakit-pc" class="tab-content hidden space-y-6">
+            
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b pb-4 gap-4" style="border-color: var(--border-color);">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-teal-700">Mini Game Workshop</span>
+                    <h2 class="font-serif font-bold text-3xl sm:text-4xl">PC Assembly Simulator 2D</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="resetPCGame()" class="px-3.5 py-1.5 rounded-full text-xs font-bold border hover:bg-black/5" style="border-color: var(--border-color);">
+                        <i class="fa-solid fa-rotate-left"></i> Reset Assembly
+                    </button>
+                    <button onclick="switchTab('beranda')" class="px-3.5 py-1.5 rounded-full text-xs font-bold btn-theme-primary">
+                        &larr; Beranda
+                    </button>
+                </div>
+            </div>
+
+            <!-- Game Board Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <div class="lg:col-span-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-extrabold uppercase tracking-wider opacity-80">Hardware Tray</h3>
+                        <span id="pcStepBadge" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-teal-100 text-teal-800">
+                            Step 1/6
+                        </span>
+                    </div>
+
+                    <p class="text-xs opacity-75">Seret (drag) komponen aktif di bawah lalu lepas (drop) ke slot yang sesuai di motherboard/casing!</p>
+
+                    <div id="pcToolbox" class="space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8 dynamic-card p-6 rounded-3xl flex flex-col justify-between relative overflow-hidden bg-slate-900 text-slate-100 min-h-[520px] border-2 shadow-xl">
+                    
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3 z-10">
+                        <div class="flex items-center gap-2 text-xs font-mono">
+                            <span id="pcBootDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                            <span id="pcStatusTitle" class="font-bold text-slate-300">ASSEMBLY WORKBENCH</span>
+                        </div>
+                        <span id="pcProgressPercent" class="text-xs font-mono font-bold text-teal-400">0% Installed</span>
+                    </div>
+
+                    <div class="relative my-6 flex-grow flex items-center justify-center min-h-[300px]">
+                        
+                        <!-- Case Graphic Slot Diagram -->
+                        <div id="pcCaseGraphic" class="w-full max-w-md h-72 rounded-2xl bg-slate-800/90 border-2 border-slate-700 p-4 relative flex flex-col justify-between shadow-2xl overflow-hidden transition-all">
+                            
+                            <!-- CPU Drop Slot -->
+                            <div id="slot-cpu" data-slot="cpu" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'cpu')" onclick="tryInstallStep('cpu')" class="drop-slot absolute top-8 left-1/2 -translate-x-1/2 w-24 h-24 rounded-xl border-2 border-dashed border-teal-500/60 bg-slate-900/80 flex flex-col items-center justify-center cursor-pointer transition-all">
+                                <i class="fa-solid fa-microchip text-slate-600 text-2xl" id="icon-slot-cpu"></i>
+                                <span class="text-[9px] font-mono text-slate-400 mt-1" id="text-slot-cpu">LGA Socket</span>
+                            </div>
+
+                            <!-- Cooler Drop Slot -->
+                            <div id="slot-cooler" data-slot="cooler" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'cooler')" onclick="tryInstallStep('cooler')" class="drop-slot absolute top-6 left-1/2 -translate-x-1/2 w-28 h-28 rounded-full border-2 border-dashed border-teal-400/80 bg-teal-950/80 flex items-center justify-center z-20 cursor-pointer shadow-lg">
+                                <i id="cpuFanBlade" class="fa-solid fa-fan text-slate-400 text-4xl"></i>
+                            </div>
+
+                            <!-- RAM Drop Slot -->
+                            <div id="slot-ram" data-slot="ram" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'ram')" onclick="tryInstallStep('ram')" class="drop-slot absolute top-8 right-6 w-12 h-28 rounded-lg border-2 border-dashed border-teal-500/60 bg-slate-900/80 flex flex-col items-center justify-center gap-1 cursor-pointer transition-all">
+                                <span class="w-1.5 h-20 bg-slate-700 rounded-sm"></span>
+                                <span class="w-1.5 h-20 bg-slate-700 rounded-sm"></span>
+                                <span class="text-[8px] font-mono text-slate-400">RAM DDR5</span>
+                            </div>
+
+                            <!-- SSD Drop Slot -->
+                            <div id="slot-ssd" data-slot="ssd" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'ssd')" onclick="tryInstallStep('ssd')" class="drop-slot absolute bottom-20 left-8 w-24 h-7 rounded-md border-2 border-dashed border-teal-500/60 bg-slate-900/80 flex items-center justify-center cursor-pointer transition-all">
+                                <span class="text-[9px] font-mono text-slate-400">M.2 NVMe Slot</span>
+                            </div>
+
+                            <!-- GPU Drop Slot -->
+                            <div id="slot-gpu" data-slot="gpu" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'gpu')" onclick="tryInstallStep('gpu')" class="drop-slot absolute bottom-6 left-1/2 -translate-x-1/2 w-64 h-12 rounded-lg border-2 border-dashed border-teal-500/60 bg-slate-900/80 flex items-center justify-between px-3 cursor-pointer transition-all">
+                                <i class="fa-solid fa-cubes text-slate-600"></i>
+                                <span class="text-[9px] font-mono text-slate-400">PCIe x16 Slot (GPU)</span>
+                            </div>
+
+                            <!-- PSU Drop Slot -->
+                            <div id="slot-psu" data-slot="psu" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'psu')" onclick="tryInstallStep('psu')" class="drop-slot absolute bottom-2 right-2 w-20 h-16 rounded-lg border-2 border-dashed border-teal-500/60 bg-slate-900/80 flex flex-col items-center justify-center cursor-pointer transition-all">
+                                <i class="fa-solid fa-plug text-slate-600 text-sm"></i>
+                                <span class="text-[8px] font-mono text-slate-400">PSU Bay</span>
+                            </div>
+
+                        </div>
+
+                        <!-- BIOS Overlay -->
+                        <div id="biosScreen" class="hidden absolute inset-0 bg-black/95 rounded-2xl p-6 font-mono text-xs text-emerald-400 flex flex-col justify-between border-2 border-emerald-500/50 shadow-2xl z-30">
+                            <div class="space-y-1">
+                                <div class="flex items-center justify-between border-b border-emerald-800 pb-2 mb-2">
+                                    <span class="font-bold text-white">&gt; CHRISTIAN-PC BIOS v2.026</span>
+                                    <span class="text-[10px] text-emerald-300">POST CHECK: PASSED</span>
+                                </div>
+                                <p>&gt; Checking System Memory... 32GB DDR5 OK</p>
+                                <p>&gt; CPU Detected: High Performance Multi-Core Processor @ 4.8GHz</p>
+                                <p>&gt; Storage: 1TB NVMe M.2 SSD Detected [BOOT READY]</p>
+                                <p>&gt; GPU Primary: Dedicated Gaming Graphics Card [ACTIVE]</p>
+                                <p>&gt; Power Delivery: 650W PSU Stable +12V Line OK</p>
+                                <p class="text-white mt-4 font-bold animate-pulse">&gt; System Ready to Boot...</p>
+                            </div>
+                            <div class="flex items-center justify-between pt-3 border-t border-emerald-800 text-[10px] text-emerald-300">
+                                <span>Status: SYSTEM OPERATIONAL</span>
+                                <button onclick="closeBios()" class="px-3 py-1 bg-emerald-600 text-black font-bold rounded hover:bg-emerald-400">OK</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 z-10">
+                        <div class="text-xs text-slate-300 font-mono">
+                            <p id="pcInstructionText">&gt; Step 1: Pasang CPU Processor ke dalam LGA Socket.</p>
+                        </div>
+
+                        <button id="pcPowerBtn" onclick="pressPowerButton()" disabled class="w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-xs bg-slate-800 text-slate-500 cursor-not-allowed transition-all flex items-center justify-center gap-2 border border-slate-700">
+                            <i class="fa-solid fa-power-off"></i> POST BOOT TEST
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: VALORANT HUB ================= -->
+        <section id="tab-valorant" class="tab-content hidden space-y-6">
+            <div class="flex items-center justify-between border-b pb-4" style="border-color: var(--border-color);">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-red-600">Competitive Player Showcase</span>
+                    <h2 class="font-serif font-bold text-3xl sm:text-4xl">Valorant Hub & Aim Trainer</h2>
+                </div>
+                <button onclick="switchTab('beranda')" class="px-3.5 py-1.5 rounded-full text-xs font-bold btn-theme-primary">
+                    &larr; Beranda
+                </button>
+            </div>
+
+            <!-- Stats Showcase -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Current Rank Card -->
+                <div class="dynamic-card p-6 rounded-3xl text-center border-t-4 border-red-500 relative overflow-hidden group">
+                    <div class="relative w-20 h-20 mx-auto mb-3 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-slate-400 via-slate-200 to-slate-400 rounded-2xl rotate-45 shadow-lg border-2 border-slate-300 group-hover:rotate-180 transition-transform duration-700"></div>
+                        <div class="relative z-10 flex flex-col items-center justify-center text-slate-900 font-extrabold">
+                            <i class="fa-solid fa-shield-halved text-xl text-slate-700 mb-0.5"></i>
+                            <span class="text-xs font-mono tracking-tighter">SILVER</span>
+                            <span class="text-sm leading-none font-black text-red-600">II</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-red-600">Current Rank</span>
+                    <h3 class="font-serif font-bold text-2xl mt-0.5">Silver 2</h3>
+                    <p class="text-xs opacity-70 mt-1">Competitive Ranked Peak</p>
+                </div>
+
+                <!-- ACS Card -->
+                <div class="dynamic-card p-6 rounded-3xl border-t-4 border-red-500 flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center gap-3.5 mb-2">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-500 to-rose-700 text-white flex items-center justify-center text-xl shadow-md shadow-red-500/20 group-hover:scale-105 transition-transform">
+                                <i class="fa-solid fa-bullseye"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-extrabold uppercase opacity-60">Avg Combat Score</span>
+                                <h4 class="font-bold text-xl text-red-500 flex items-center gap-1.5">
+                                    20+ Kills <span class="text-xs font-normal text-slate-400">/ Match</span>
+                                </h4>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed opacity-75">
+                            Fokus pada Duelist & Controller entry fragging, map control, serta crosshair placement presisi.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Signature Loadout Card -->
+                <div class="dynamic-card p-6 rounded-3xl border-t-4 border-red-500 flex flex-col justify-between group">
+                    <div>
+                        <div class="flex items-center gap-3.5 mb-2">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-600 text-slate-950 flex items-center justify-center text-xl shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform">
+                                <i class="fa-solid fa-person-rifle"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-extrabold uppercase opacity-60">Signature Loadout</span>
+                                <h4 class="font-bold text-xl text-amber-500">Vandal Prime 1.0</h4>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed opacity-75">
+                            Skin Vandal legendaris dengan efek tembakan laser renyah & finisher memukau.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reflex Aim Trainer Game -->
+            <div class="dynamic-card p-6 rounded-3xl border-2 border-red-500/30">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
+                    <div>
+                        <h4 class="font-serif font-bold text-lg">Mini Game: Reflex Aim Trainer</h4>
+                        <p class="text-xs opacity-75">Klik target merah secepat mungkin untuk menguji refleks bidikan Anda!</p>
+                    </div>
+                    <div class="flex items-center gap-4 text-xs font-mono font-bold">
+                        <span>Score: <span id="aimScore" class="text-red-600 text-base">0</span></span>
+                        <span>Timer: <span id="aimTimer" class="text-slate-800 text-base">15s</span></span>
+                        <button onclick="startAimGame()" class="px-4 py-1.5 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 shadow">
+                            Start Aim Test
+                        </button>
+                    </div>
+                </div>
+
+                <div id="aimBox" class="w-full h-64 bg-slate-950 rounded-2xl relative overflow-hidden flex items-center justify-center cursor-crosshair border border-slate-800">
+                    <div id="aimTarget" onclick="hitAimTarget(event)" class="hidden w-11 h-11 bg-red-600 rounded-full absolute transition-all duration-100 flex items-center justify-center border-2 border-white shadow-lg shadow-red-600/50">
+                        <div class="w-2.5 h-2.5 bg-white rounded-full"></div>
+                    </div>
+                    <p id="aimMsg" class="text-xs font-mono text-slate-400">Klik "Start Aim Test" untuk memulai tantangan!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: INFRASTRUKTUR LAN (CRIMPING GAME) ================= -->
+        <section id="tab-infrastruktur" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b pb-4 gap-4" style="border-color: var(--border-color);">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Simulasi Jaringan Komputer</span>
+                    <h2 class="font-serif font-bold text-3xl sm:text-4xl">LAN Cable Crimping Game</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="resetCableGame()" class="px-3.5 py-1.5 rounded-full text-xs font-bold border hover:bg-black/5" style="border-color: var(--border-color);">
+                        <i class="fa-solid fa-rotate-left"></i> Acak Ulang Warna
+                    </button>
+                    <button onclick="switchTab('beranda')" class="px-3.5 py-1.5 rounded-full text-xs font-bold btn-theme-primary">
+                        &larr; Beranda
+                    </button>
+                </div>
+            </div>
+
+            <!-- Wire Sorting & Crimping Workshop -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <div class="lg:col-span-8 dynamic-card p-6 rounded-3xl border-2 border-blue-200">
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-serif font-bold text-lg">Susun Urutan Kabel Standar T-568B</h3>
+                            <span class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-blue-100 text-blue-800">Straight Cable</span>
+                        </div>
+                        <p class="text-xs opacity-75 mt-1">
+                            Klik dua warna kabel di bawah untuk saling menukar posisi hingga sesuai urutan resmi T-568B (Pin 1 s/d 8).
+                        </p>
+                    </div>
+
+                    <!-- 8 Wires Container -->
+                    <div id="wireContainer" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 my-6">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <div class="pt-4 border-t flex flex-col sm:flex-row items-center justify-between gap-3" style="border-color: var(--border-color);">
+                        <div class="text-xs font-mono">
+                            <span id="crimpStatusText" class="text-blue-700 font-bold">&gt; Pilih & susun 8 kabel di atas...</span>
+                        </div>
+                        <button onclick="crimpRJ45()" id="btnCrimp" class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold text-xs shadow-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-scissors"></i> CRIMP RJ-45 CONNECTOR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- LAN Tester Simulator -->
+                <div class="lg:col-span-4 dynamic-card p-6 rounded-3xl bg-slate-900 text-slate-100 border-2 border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+                                <h4 class="font-mono font-bold text-xs text-slate-300">LAN TESTER RX/TX</h4>
+                            </div>
+                            <span class="text-[10px] font-mono text-slate-500">RJ45 CAT6</span>
+                        </div>
+
+                        <p class="text-xs text-slate-400 mb-6">
+                            Lakukan crimping terlebih dahulu, lalu jalankan test sequence untuk memeriksa kontinuitas sinyal pin.
+                        </p>
+
+                        <!-- LED Display 1 - 8 -->
+                        <div class="grid grid-cols-4 gap-3 bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                            <div class="flex flex-col items-center">
+                                <div id="lan-led-1" class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-mono text-xs font-bold text-slate-400 mb-1">1</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="lan-led-2" class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-mono text-xs font-bold text-slate-400 mb-1">2</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="lan-led-3" class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-mono text-xs font-bold text-slate-400 mb-1">3</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="lan-led-4" class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-mono text-xs font-bold text-slate-400 mb-1">4</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="lan-led-5" class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-mono text-xs font-bold text-slate-400 mb-1">5</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="lan-led-6" class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-mono text-xs font-bold text-slate-400 mb-1">6</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="lan-led-7" class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-mono text-xs font-bold text-slate-400 mb-1">7</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="lan-led-8" class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-mono text-xs font-bold text-slate-400 mb-1">8</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 mt-6">
+                        <button onclick="testLANSequence()" id="btnTestLAN" disabled class="w-full py-3 bg-slate-800 text-slate-500 rounded-xl font-bold text-xs cursor-not-allowed transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-play"></i> TEST CABLE CONTINUITY
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: BERMUSIK ================= -->
+        <section id="tab-bermusik" class="tab-content hidden space-y-6">
+            <div class="flex items-center justify-between border-b pb-4" style="border-color: var(--border-color);">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-amber-800">Acoustic & Guitar</span>
+                    <h2 class="font-serif font-bold text-3xl sm:text-4xl">Bermusik Gitar</h2>
+                </div>
+                <button onclick="switchTab('beranda')" class="px-3.5 py-1.5 rounded-full text-xs font-bold btn-theme-primary">
+                    &larr; Beranda
+                </button>
+            </div>
+
+            <!-- Music Card -->
+            <div class="dynamic-card p-6 sm:p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <span class="text-[10px] font-extrabold uppercase px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+                        Work In Progress Song
+                    </span>
+                    <h3 class="font-serif font-bold text-2xl">Sempurna - Andra & The BackBone</h3>
+                    <p class="text-xs opacity-75 max-w-lg">
+                        Lagu favorit yang saat ini sedang dipelajari dalam susunan aransemen petikan gitar akustik.
+                    </p>
+                </div>
+
+                <button onclick="playSongSynth()" id="btnPlaySong" class="px-6 py-3.5 bg-amber-800 text-white rounded-2xl font-bold text-xs hover:bg-amber-900 shadow-md flex items-center gap-3 transition-all">
+                    <i class="fa-solid fa-circle-play text-lg"></i> Play Guitar Intro (Synth)
+                </button>
+            </div>
+
+            <!-- Virtual Guitar Fret Strings Pads -->
+            <div class="dynamic-card p-6 rounded-3xl text-center space-y-4">
+                <h4 class="font-serif font-bold text-lg">Playable Guitar Fretboard Pads</h4>
+                <p class="text-xs opacity-75">Klik pad senar di bawah untuk membunyikan nada akustik:</p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 pt-2">
+                    <button onclick="playGuitarNote('E2')" class="p-4 bg-amber-50/80 rounded-2xl border border-amber-200 hover:bg-amber-800 hover:text-white transition-all group">
+                        <span class="block text-[10px] opacity-60 group-hover:text-amber-200">Senar 6</span>
+                        <span class="font-serif font-bold text-lg">E Low</span>
+                    </button>
+                    <button onclick="playGuitarNote('A2')" class="p-4 bg-amber-50/80 rounded-2xl border border-amber-200 hover:bg-amber-800 hover:text-white transition-all group">
+                        <span class="block text-[10px] opacity-60 group-hover:text-amber-200">Senar 5</span>
+                        <span class="font-serif font-bold text-lg">A</span>
+                    </button>
+                    <button onclick="playGuitarNote('D3')" class="p-4 bg-amber-50/80 rounded-2xl border border-amber-200 hover:bg-amber-800 hover:text-white transition-all group">
+                        <span class="block text-[10px] opacity-60 group-hover:text-amber-200">Senar 4</span>
+                        <span class="font-serif font-bold text-lg">D</span>
+                    </button>
+                    <button onclick="playGuitarNote('G3')" class="p-4 bg-amber-50/80 rounded-2xl border border-amber-200 hover:bg-amber-800 hover:text-white transition-all group">
+                        <span class="block text-[10px] opacity-60 group-hover:text-amber-200">Senar 3</span>
+                        <span class="font-serif font-bold text-lg">G</span>
+                    </button>
+                    <button onclick="playGuitarNote('B3')" class="p-4 bg-amber-50/80 rounded-2xl border border-amber-200 hover:bg-amber-800 hover:text-white transition-all group">
+                        <span class="block text-[10px] opacity-60 group-hover:text-amber-200">Senar 2</span>
+                        <span class="font-serif font-bold text-lg">B</span>
+                    </button>
+                    <button onclick="playGuitarNote('E4')" class="p-4 bg-amber-50/80 rounded-2xl border border-amber-200 hover:bg-amber-800 hover:text-white transition-all group">
+                        <span class="block text-[10px] opacity-60 group-hover:text-amber-200">Senar 1</span>
+                        <span class="font-serif font-bold text-lg">E High</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-6 px-4 sm:px-8 border-t mt-16 text-center sm:text-left" style="border-color: var(--border-color);">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs opacity-75 gap-2">
+            <p class="font-medium">Christian Aditya Wardana</p>
+            <p>&copy; 2026 Personal Hub & Mini-Games, Kampung Babakan.</p>
+        </div>
+    </footer>
+
+    <!-- Audio SFX via Web Audio API -->
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSoundSFX(type) {
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'snap') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
+                } else if (type === 'beep') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.15);
+                } else if (type === 'crimp') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.12);
+                    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.12);
+                } else if (type === 'error') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    </script>
+
+    <!-- Core App Logic & Global Functions -->
+    <script>
+        // GLOBAL NAVIGATION & TAB SWITCHER FUNCTION
+        function switchTab(tabId) {
+            // 1. Hide all tab content sections
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(el => el.classList.add('hidden'));
+
+            // 2. Show target tab section
+            const target = document.getElementById('tab-' + tabId);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+
+            // 3. Reset Body Theme classes
+            document.body.className = "font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-amber-200/50 pb-20";
+            if (tabId !== 'beranda') {
+                document.body.classList.add('theme-' + tabId);
+            }
+
+            // 4. Update Header Nav Button Highlights
+            const navBtns = document.querySelectorAll('.tab-btn');
+            navBtns.forEach(btn => {
+                const btnTab = btn.getAttribute('data-tab-btn');
+                if (btnTab === tabId) {
+                    btn.style.backgroundColor = "var(--primary)";
+                    btn.style.color = "#ffffff";
+                    btn.classList.remove('opacity-80');
+                } else {
+                    btn.style.backgroundColor = "transparent";
+                    btn.style.color = "var(--text-main)";
+                    btn.classList.add('opacity-80');
+                }
+            });
+
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // TOGGLE 3-DOT MENU DROPDOWN
+        function toggleDotsMenu(e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('dotsMenu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('dotsMenu');
+            const btn = document.getElementById('dotsBtn');
+            if (menu && !menu.classList.contains('hidden') && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // ================= GAME 1: PC ASSEMBLY SIMULATOR =================
+        const pcSteps = [
+            { id: 'cpu', name: 'CPU Processor', slot: 'cpu', desc: 'Pasang CPU Processor ke dalam LGA Socket.' },
+            { id: 'cooler', name: 'CPU Cooler Fan', slot: 'cooler', desc: 'Pasang CPU Cooler di atas processor.' },
+            { id: 'ram', name: 'RAM DDR5', slot: 'ram', desc: 'Tancapkan Dual-Channel RAM DDR5 ke slot RAM.' },
+            { id: 'ssd', name: 'M.2 NVMe SSD', slot: 'ssd', desc: 'Pasang NVMe SSD pada slot M.2.' },
+            { id: 'gpu', name: 'Graphics Card (GPU)', slot: 'gpu', desc: 'Tancapkan kartu grafis ke PCIe x16 slot.' },
+            { id: 'psu', name: 'Power Supply (PSU)', slot: 'psu', desc: 'Hubungkan kabel Power Supply (PSU) 650W.' }
+        ];
+
+        let currentPCStep = 0;
+        let installedParts = [];
+
+        function renderPCToolbox() {
+            const container = document.getElementById('pcToolbox');
+            if (!container) return;
+            container.innerHTML = '';
+
+            pcSteps.forEach((step, index) => {
+                const isCurrent = index === currentPCStep;
+                const isDone = installedParts.includes(step.id);
+
+                const div = document.createElement('div');
+                div.className = `p-3.5 rounded-2xl border transition-all flex items-center justify-between ${
+                    isDone ? 'bg-teal-950/40 border-teal-800/60 text-slate-400' :
+                    isCurrent ? 'bg-teal-900/60 border-teal-500 text-white shadow-lg shadow-teal-500/20 draggable-part' :
+                    'bg-slate-800/40 border-slate-700/50 text-slate-500 opacity-50'
+                }`;
+
+                if (isCurrent && !isDone) {
+                    div.draggable = true;
+                    div.ondragstart = (e) => handleDragStart(e, step.id);
+                    div.ondragend = (e) => handleDragEnd(e);
+                }
+
+                div.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full flex items-center justify-center font-mono text-[10px] font-bold ${
+                            isDone ? 'bg-teal-500 text-black' : isCurrent ? 'bg-teal-400 text-black' : 'bg-slate-700 text-slate-400'
+                        }">
+                            ${isDone ? '✓' : index + 1}
+                        </span>
+                        <div>
+                            <h4 class="text-xs font-bold">${step.name}</h4>
+                            <span class="text-[9px] opacity-75">${isDone ? 'Installed' : isCurrent ? 'Ready to Drag/Install' : 'Locked'}</span>
+                        </div>
+                    </div>
+                    ${isCurrent ? '<i class="fa-solid fa-grip-vertical text-teal-400 text-xs"></i>' : ''}
+                `;
+
+                container.appendChild(div);
+            });
+        }
+
+        function handleDragStart(e, partId) {
+            e.dataTransfer.setData('text/plain', partId);
+            e.target.classList.add('dragging');
+            
+            // Highlight target slot
+            const targetSlot = document.getElementById('slot-' + partId);
+            if (targetSlot) {
+                targetSlot.classList.add('border-sky-400', 'animate-pulse');
+            }
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.drop-slot').forEach(slot => {
+                slot.classList.remove('drag-over', 'border-sky-400', 'animate-pulse');
+            });
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e, slotId) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            const partId = e.dataTransfer.getData('text/plain');
+
+            if (partId === slotId) {
+                tryInstallStep(slotId);
+            } else {
+                playSoundSFX('error');
+            }
+        }
+
+        function tryInstallStep(slotId) {
+            if (currentPCStep >= pcSteps.length) return;
+
+            const expectedPart = pcSteps[currentPCStep];
+            if (slotId === expectedPart.id) {
+                playSoundSFX('snap');
+                installedParts.push(expectedPart.id);
+                markSlotInstalled(expectedPart.id);
+
+                currentPCStep++;
+                updatePCProgress();
+            } else {
+                playSoundSFX('error');
+            }
+        }
+
+        function markSlotInstalled(partId) {
+            const slot = document.getElementById('slot-' + partId);
+            if (!slot) return;
+
+            slot.classList.add('bg-teal-500/20', 'border-teal-400');
+
+            if (partId === 'cpu') {
+                const icon = document.getElementById('icon-slot-cpu');
+                if (icon) icon.className = 'fa-solid fa-microchip text-teal-400 text-3xl';
+            } else if (partId === 'cooler') {
+                const fan = document.getElementById('cpuFanBlade');
+                if (fan) fan.classList.add('text-teal-300');
+            }
+        }
+
+        function updatePCProgress() {
+            const percent = Math.round((installedParts.length / pcSteps.length) * 100);
+            document.getElementById('pcProgressPercent').innerText = percent + '% Installed';
+
+            const badge = document.getElementById('pcStepBadge');
+            const instr = document.getElementById('pcInstructionText');
+            const pwrBtn = document.getElementById('pcPowerBtn');
+
+            if (currentPCStep < pcSteps.length) {
+                badge.innerText = `Step ${currentPCStep + 1}/6`;
+                instr.innerText = `> Step ${currentPCStep + 1}: ${pcSteps[currentPCStep].desc}`;
+            } else {
+                badge.innerText = 'Completed!';
+                badge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800';
+                instr.innerText = '> Perakitan Selesai! Tekan tombol POST BOOT TEST.';
+
+                pwrBtn.disabled = false;
+                pwrBtn.className = 'w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-xs bg-emerald-500 hover:bg-emerald-400 text-black shadow-lg shadow-emerald-500/30 cursor-pointer transition-all flex items-center justify-center gap-2';
+            }
+
+            renderPCToolbox();
+        }
+
+        function pressPowerButton() {
+            playSoundSFX('beep');
+            const fan = document.getElementById('cpuFanBlade');
+            if (fan) fan.classList.add('fan-spinning');
+
+            setTimeout(() => {
+                const bios = document.getElementById('biosScreen');
+                if (bios) bios.classList.remove('hidden');
+            }, 600);
+        }
+
+        function closeBios() {
+            const bios = document.getElementById('biosScreen');
+            if (bios) bios.classList.add('hidden');
+        }
+
+        function resetPCGame() {
+            currentPCStep = 0;
+            installedParts = [];
+
+            const fan = document.getElementById('cpuFanBlade');
+            if (fan) fan.className = 'fa-solid fa-fan text-slate-400 text-4xl';
+
+            document.querySelectorAll('.drop-slot').forEach(slot => {
+                slot.classList.remove('bg-teal-500/20', 'border-teal-400');
+            });
+
+            const pwrBtn = document.getElementById('pcPowerBtn');
+            pwrBtn.disabled = true;
+            pwrBtn.className = 'w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-xs bg-slate-800 text-slate-500 cursor-not-allowed transition-all flex items-center justify-center gap-2 border border-slate-700';
+
+            closeBios();
+            updatePCProgress();
+        }
+
+        // ================= GAME 2: VALORANT AIM REFLEX =================
+        let aimScore = 0;
+        let aimTotalClicks = 0;
+        let aimTimeLeft = 15;
+        let aimTimerInterval = null;
+        let isAimRunning = false;
+
+        function startAimGame() {
+            if (isAimRunning) return;
+            isAimRunning = true;
+            aimScore = 0;
+            aimTotalClicks = 0;
+            aimTimeLeft = 15;
+            document.getElementById('aimScore').innerText = aimScore;
+            document.getElementById('aimTimer').innerText = aimTimeLeft + 's';
+            document.getElementById('aimMsg').classList.add('hidden');
+            document.getElementById('aimTarget').classList.remove('hidden');
+
+            moveTargetRandomly();
+
+            const box = document.getElementById('aimBox');
+            box.onclick = () => { if (isAimRunning) aimTotalClicks++; };
+
+            aimTimerInterval = setInterval(() => {
+                aimTimeLeft--;
+                document.getElementById('aimTimer').innerText = aimTimeLeft + 's';
+
+                if (aimTimeLeft <= 0) {
+                    clearInterval(aimTimerInterval);
+                    isAimRunning = false;
+                    document.getElementById('aimTarget').classList.add('hidden');
+                    document.getElementById('aimMsg').classList.remove('hidden');
+                    document.getElementById('aimMsg').innerText = `Game Over! Total Score Refleks Anda: ${aimScore} Kills!`;
+                }
+            }, 1000);
+        }
+
+        function hitAimTarget(e) {
+            if (!isAimRunning) return;
+            e.stopPropagation();
+            aimTotalClicks++;
+            playSoundSFX('snap');
+            aimScore++;
+            document.getElementById('aimScore').innerText = aimScore;
+            moveTargetRandomly();
+        }
+
+        function moveTargetRandomly() {
+            const box = document.getElementById('aimBox');
+            const target = document.getElementById('aimTarget');
+            if (!box || !target) return;
+            const maxX = box.clientWidth - 50;
+            const maxY = box.clientHeight - 50;
+
+            const x = Math.floor(Math.random() * Math.max(maxX, 10));
+            const y = Math.floor(Math.random() * Math.max(maxY, 10));
+
+            target.style.left = x + 'px';
+            target.style.top = y + 'px';
+        }
+
+        // ================= GAME 3: LAN CABLE CRIMPING SIMULATOR =================
+        const correctT568BOrder = [
+            "Orange-White", "Orange", "Green-White", "Blue", 
+            "Blue-White", "Green", "Brown-White", "Brown"
+        ];
+
+        const wireColorStyles = {
+            "Orange-White": "bg-gradient-to-r from-orange-400 via-white to-orange-400 text-slate-800",
+            "Orange": "bg-orange-500 text-white",
+            "Green-White": "bg-gradient-to-r from-emerald-400 via-white to-emerald-400 text-slate-800",
+            "Blue": "bg-blue-600 text-white",
+            "Blue-White": "bg-gradient-to-r from-blue-400 via-white to-blue-400 text-slate-800",
+            "Green": "bg-emerald-600 text-white",
+            "Brown-White": "bg-gradient-to-r from-amber-700 via-white to-amber-700 text-slate-800",
+            "Brown": "bg-amber-800 text-white"
+        };
+
+        let currentWires = [...correctT568BOrder];
+        let selectedWireIdx = null;
+        let isCrimped = false;
+
+        function shuffleWires() {
+            currentWires.sort(() => Math.random() - 0.5);
+            selectedWireIdx = null;
+            isCrimped = false;
+        }
+
+        function renderWires() {
+            const container = document.getElementById('wireContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            currentWires.forEach((color, idx) => {
+                const btn = document.createElement('button');
+                const isSelected = selectedWireIdx === idx;
+
+                btn.onclick = () => selectWire(idx);
+                btn.className = `p-3 rounded-2xl flex flex-col items-center justify-between h-28 border-2 transition-all ${
+                    wireColorStyles[color]
+                } ${isSelected ? 'ring-4 ring-blue-500 scale-105 shadow-xl' : 'hover:scale-102'}`;
+
+                btn.innerHTML = `
+                    <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-black/30 text-white">Pin ${idx + 1}</span>
+                    <span class="text-[9px] font-bold text-center leading-tight drop-shadow">${color}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectWire(idx) {
+            if (isCrimped) return;
+            playSoundSFX('snap');
+
+            if (selectedWireIdx === null) {
+                selectedWireIdx = idx;
+            } else {
+                // Swap selected wires
+                const temp = currentWires[selectedWireIdx];
+                currentWires[selectedWireIdx] = currentWires[idx];
+                currentWires[idx] = temp;
+                selectedWireIdx = null;
+            }
+            renderWires();
+        }
+
+        function crimpRJ45() {
+            playSoundSFX('crimp');
+            isCrimped = true;
+
+            const status = document.getElementById('crimpStatusText');
+            const btnTest = document.getElementById('btnTestLAN');
+
+            if (status) status.innerText = '> Connector RJ-45 Crimped! Siap diuji.';
+            if (btnTest) {
+                btnTest.disabled = false;
+                btnTest.className = 'w-full py-3 bg-blue-600 text-white rounded-xl font-bold text-xs hover:bg-blue-500 shadow-lg transition-all flex items-center justify-center gap-2';
+            }
+        }
+
+        function testLANSequence() {
+            const isCorrect = JSON.stringify(currentWires) === JSON.stringify(correctT568BOrder);
+            let delay = 0;
+
+            for (let i = 1; i <= 8; i++) {
+                setTimeout(() => {
+                    const led = document.getElementById(`lan-led-${i}`);
+                    if (led) {
+                        playSoundSFX('beep');
+                        if (isCorrect) {
+                            led.className = 'w-7 h-7 rounded-full bg-emerald-500 text-black border border-emerald-300 flex items-center justify-center font-mono text-xs font-bold shadow-lg shadow-emerald-500/50 mb-1';
+                        } else {
+                            led.className = 'w-7 h-7 rounded-full bg-red-600 text-white border border-red-400 flex items-center justify-center font-mono text-xs font-bold shadow-lg shadow-red-600/50 mb-1';
+                        }
+                    }
+                }, delay);
+                delay += 250;
+            }
+
+            setTimeout(() => {
+                const status = document.getElementById('crimpStatusText');
+                if (status) {
+                    if (isCorrect) {
+                        status.innerText = ' SUCCESS! Urutan T-568B Benar. Kabel LAN Aktif!';
+                        status.className = 'text-emerald-400 font-bold';
+                    } else {
+                        status.innerText = ' FAIL! Urutan warna kabel salah. Silakan reset & coba lagi.';
+                        status.className = 'text-red-500 font-bold';
+                    }
+                }
+            }, delay + 200);
+        }
+
+        function resetCableGame() {
+            shuffleWires();
+            renderWires();
+
+            const status = document.getElementById('crimpStatusText');
+            if (status) {
+                status.innerText = '> Pilih & susun 8 kabel di atas...';
+                status.className = 'text-blue-700 font-bold';
+            }
+
+            for (let i = 1; i <= 8; i++) {
+                const led = document.getElementById(`lan-led-${i}`);
+                if (led) {
+                    led.className = 'w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-mono text-xs font-bold text-slate-400 mb-1';
+                }
+            }
+
+            const btnTest = document.getElementById('btnTestLAN');
+            if (btnTest) {
+                btnTest.disabled = true;
+                btnTest.className = 'w-full py-3 bg-slate-800 text-slate-500 rounded-xl font-bold text-xs cursor-not-allowed transition-all flex items-center justify-center gap-2';
+            }
+        }
+
+        // ================= GAME 4: BERMUSIK GUITAR SYNTH =================
+        const notesFreq = {
+            'E2': 82.41,
+            'A2': 110.00,
+            'D3': 146.83,
+            'G3': 196.00,
+            'B3': 246.94,
+            'E4': 329.63
+        };
+
+        function playGuitarNote(note) {
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(notesFreq[note] || 220, audioCtx.currentTime);
+
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + 1.2);
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        function playSongSynth() {
+            const songNotes = ['E2', 'B3', 'G3', 'D3', 'B3', 'E4', 'G3', 'B3'];
+            let time = 0;
+
+            songNotes.forEach(note => {
+                setTimeout(() => {
+                    playGuitarNote(note);
+                }, time);
+                time += 300;
+            });
+        }
+
+        // Initialize default application state on window load
+        window.onload = function() {
+            renderPCToolbox();
+            resetCableGame();
+        };
+    </script>
+</body>
+</html>
